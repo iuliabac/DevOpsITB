@@ -8,10 +8,10 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN a2enmod rewrite
 
 # Set the working directory in the container
-WORKDIR /var/www/html
+WORKDIR /var/www/html/
 
 # Copy Laravel app files into the container
-COPY . /var/www/html
+COPY ./DevOpsITB /var/www/html/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
