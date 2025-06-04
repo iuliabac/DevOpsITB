@@ -13,16 +13,15 @@ WORKDIR /var/www/html/
 # Copy Laravel app files into the container
 COPY . /var/www/html/
 
-# change document root to pint to laravels publid folder
+# Change document root to point to Laravel's public folder
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# suppress ServerName Warning
+# Suppress ServerName warning
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Expose port 80
 EXPOSE 80
-

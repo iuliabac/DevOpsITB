@@ -1,0 +1,37 @@
+version: "3.8"  # Compose file version
+
+services:
+    mysql:
+        image: mysql:8.0               # Use official MySQL image
+        container_name: itb_mysql      # Friendly container name
+        restart: unless-stopped        # Auto restart unless manually stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root    # Root password for MySQL
+            MYSQL_DATABASE: laravel      # Database to create automatically
+        ports:
+            - "3306:3306"                # Expose MySQL port on host machine
+        volumes:
+            - mysql-data:/var/lib/mysql  # Persist MySQL data in volume
+        networks:
+            - lamp_itb_net               # Use shared network
+
+    web:
+        build:
+            context: .                   # Build from current directory
+            dockerfile: Dockerfile       # Use your Dockerfile here
+        container_name: itb_web
+        restart: unless-stopped
+        ports:
+            - "8080:80"                  # Expose Apache on port 8080
+        volumes:
+            - ./DevOpsITB:/var/www/html  # Map Laravel project files into container
+        depends_on:
+            - mysql                      # Ensure MySQL starts first
+        networks:
+            - lamp_itb_net
+
+volumes:
+    mysql-data:                      # Define named volume for MySQL data persistence
+
+networks:
+    lamp_itb_net:                   # Define a custom network for communication
